@@ -61,7 +61,24 @@ if [ -n "${RESET_PASSWORD}" ]; then
     && echo "[INFO] Password reset via alist CLI OK" \
     || echo "[WARN] alist CLI reset failed (missing config under /data or DB not reachable)"
 fi
-export ALIST_LOG_LEVEL=debug
+echo "[INFO] Checking AList database backend"
+
+if [ -n "$DATABASE_URL" ]; then
+  if [[ "$DATABASE_URL" =~ ^postgres ]]; then
+    echo "[INFO] Database backend: PostgreSQL (remote)"
+  elif [[ "$DATABASE_URL" =~ ^mysql ]]; then
+    echo "[INFO] Database backend: MySQL (remote)"
+  else
+    echo "[WARN] DATABASE_URL is set but protocol is unknown"
+  fi
+else
+  if [ -f "/data/config.json" ]; then
+    DB_TYPE=$(jq -r '.database.type // "sqlite"' /data/config.json)
+    echo "[INFO] Database backend (from config): $DB_TYPE"
+  else
+    echo "[INFO] Database backend: sqlite (default/local)"
+  fi
+fi
 
 exec ${EXEC} server --no-prefix
 # Optional: reset admin password before starting server
