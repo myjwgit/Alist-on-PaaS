@@ -61,6 +61,7 @@ if [ -n "${RESET_PASSWORD}" ]; then
     && echo "[INFO] Password reset via alist CLI OK" \
     || echo "[WARN] alist CLI reset failed (missing config under /data or DB not reachable)"
 fi
+export ALIST_LOG_LEVEL=debug
 
 exec ${EXEC} server --no-prefix
 # Optional: reset admin password before starting server
