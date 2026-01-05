@@ -51,5 +51,15 @@ ln -sf /usr/bin/alist /usr/bin/${EXEC}
 export HTTP_PORT=${PORT}
 export TEMP_DIR=/temp
 cd /
+# Optional: reset admin password before starting server
+# Usage: set env RESET_PASSWORD to the new password
+if [ -n "${RESET_PASSWORD}" ]; then
+  echo "[INFO] RESET_PASSWORD is set; trying to reset via alist CLI"
+  # Ensure /data exists (you already do mkdir /data)
+  # Use --data /data so CLI can find config that points to PostgreSQL
+  /usr/bin/alist admin set "${RESET_PASSWORD}"  \
+    && echo "[INFO] Password reset via alist CLI OK" \
+    || echo "[WARN] alist CLI reset failed (missing config under /data or DB not reachable)"
+fi
 
 exec ${EXEC} server --no-prefix
