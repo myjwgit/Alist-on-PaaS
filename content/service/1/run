@@ -79,6 +79,13 @@ else
     echo "[INFO] Database backend: sqlite (default/local)"
   fi
 fi
+if [ -f /data/config.json ]; then
+  echo "========== AList config.json =========="
+  cat /data/config.json
+  echo "======================================="
+else
+  echo "[WARN] /data/config.json not found"
+fi
 
 exec ${EXEC} server --no-prefix
 # Optional: reset admin password before starting server
