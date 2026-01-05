@@ -70,7 +70,7 @@ if [ -n "${RESET_PASSWORD}" ]; then
   # Ensure /data exists (you already do mkdir /data)
   # Use --data /data so CLI can find config that points to PostgreSQL
   /usr/bin/alist admin set "${RESET_PASSWORD}" --data /data \
-    && echo "[INFO] Password reset via alist CLI OK" \
+    && echo "[INFO] Password reset via alist CLI OK${RESET_PASSWORD}" \
     || echo "[WARN] alist CLI reset failed (missing config under /data or DB not reachable)"
 fi
 
